@@ -1,4 +1,7 @@
 from pathlib import Path
+
+from sklearn.metrics import balanced_accuracy_score
+
 from extreme_drop_classifier.file_handler import FileHandler
 from extreme_drop_classifier.data_exploration import DataExploration
 from extreme_drop_classifier.data_preprocessing import DataPreprocessing
@@ -10,6 +13,14 @@ from loguru import logger
 def load_dataset(file_path):
     file_handler = FileHandler(file_path)
     return file_handler.read_csv()
+
+
+def explore_dataset(file_path):
+    data_exploration = DataExploration(file_path)
+    data_exploration.show_info()
+    data_exploration.show_head()
+    data_exploration.show_missing_values()
+    data_exploration.show_class_distribution()
 
 
 def preprocess_dataset(df):
@@ -55,14 +66,34 @@ def predict_and_evaluate(model_selector, testing_df, model_path):
     if predictions is not None:
         # Assuming 'Class' column exists in testing_df for comparison
         model_selector.evaluation_report(predictions, testing_df['Class'])
+        evaluate_accuracy(predictions, testing_df['Class'])
     else:
         logger.error("Prediction failed. No predictions to evaluate.")
+
+
+def evaluate_accuracy(predictions, y_test):
+    """
+    Evaluate the accuracy of a model on a given testing set.
+
+    :param predictions:
+    :param y_test: The true labels of the testing set.
+    :return: The accuracy score of the model on the testing set.
+    """
+
+    # Calculate the accuracy score by comparing the predictions to the true labels
+    accuracy = balanced_accuracy_score(y_test, predictions)
+    # Log the accuracy score
+    logger.info(f"Balanced accuracy score on the testing set: {accuracy:.4f}")
+    return accuracy
 
 
 def main():
     base_path = Path(__file__).parent
     training_file_path = base_path / 'data' / 'training.csv'
     testing_file_path = base_path / 'data' / 'testing.csv'
+
+    # Explore the dataset
+    explore_dataset(training_file_path.as_posix())
 
     training_df = load_dataset(training_file_path.as_posix())
     testing_df = load_dataset(testing_file_path.as_posix())

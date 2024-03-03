@@ -1,8 +1,8 @@
 from loguru import logger
 from extreme_drop_classifier.file_handler import FileHandler
-import pandas as pd
 
 
+# TODO: maybe provide FileHandler as an argument
 class DataExploration:
     def __init__(self, file_path):
         """

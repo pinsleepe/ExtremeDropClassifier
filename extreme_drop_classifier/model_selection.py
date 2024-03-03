@@ -2,7 +2,7 @@ import pickle
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, classification_report, balanced_accuracy_score
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier  # Example classifier
 from loguru import logger
 
@@ -84,7 +84,7 @@ class ModelSelection:
 
     # TODO: Add target name to parameter
     def evaluation_report(self, predictions, y_test):
-        accuracy = accuracy_score(y_test, predictions)
+        accuracy = balanced_accuracy_score(y_test, predictions)
         report = classification_report(y_test, predictions, target_names=['Normal', 'Issue'])
 
         logger.info(f"Accuracy on test set: {accuracy}")
