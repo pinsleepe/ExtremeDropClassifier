@@ -1,10 +1,22 @@
-import pickle
+import pickle  # TODO: use joblib instead
 
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, balanced_accuracy_score
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier  # Example classifier
 from loguru import logger
+
+# TODO: add cross-validation to model evaluation (only doing single train-test split atm)
+# TODO: add hyperparameter tuning to model selection (add grid search for each model type)
+# TODO: add evaluation metrics to model selection
+# TODO: add early stopping to model selection
+# TODO: add ensemble models to model selection
+# TODO: add feature importance to model selection
+# TODO: use Pipeline to combine feature engineering and model selection
+# TODO: add serving (FastAPI, Streamlit, etc.)
+# TODO: use model quantization, pruning, or distillation to reduce model size and improve inference speed without significantly compromising accuracy
+# TODO: add MLFlow or similar to track artifacts
+# TODO: add retraining capabilities with web scraping, API calls, or automated database queries
 
 
 class ModelSelection:
@@ -28,6 +40,7 @@ class ModelSelection:
 
         # Mapping of model names to classifier objects
         # model parameters adjusted for imbalanced dataset
+        # TODO: add hyperparameter grids
         self.available_models = {
             'random_forest': RandomForestClassifier(n_estimators=100,
                                                     class_weight='balanced',
@@ -77,12 +90,15 @@ class ModelSelection:
         model.fit(self.X_train, self.y_train)
         logger.info("Model fitted on the training data.")
 
+    # TODO: extract the feature importance and log it, visualize it etc
+    # TODO: evaluate based on many metrics (get_scorer) to acheive comprehensive evaluation
     def evaluate_model(self, model):
         predictions = model.predict(self.X_test)
         accuracy, _ = self.evaluation_report(predictions, self.y_test)
         return accuracy
 
     # TODO: Add target name to parameter
+    # TODO: use more advanced model interpretability like SHAP or Lime
     def evaluation_report(self, predictions, y_test):
         accuracy = balanced_accuracy_score(y_test, predictions)
         report = classification_report(y_test, predictions, target_names=['Normal', 'Issue'])
@@ -92,13 +108,19 @@ class ModelSelection:
 
         return accuracy, report
 
+    # TODO: add tuner for model function to fit the grid and then train the model, its costly operation
+    # TODO: if spaces are large use Random Search or Bayesian Optimization
+    # TODO: use different scoring techniques, for example F1
     def find_best_model(self):
+        # TODO: add number of folds for CV
+        # TODO: based on the problem might add custom metrics
+        # TODO: after finding the best model fit it again on the whole training set
         for name, model in self.available_models.items():
             logger.info(f"Evaluating model: {name}")
             self.fit_model(model)
             accuracy = self.evaluate_model(model)
             logger.info(f"Accuracy for {name}: {accuracy}")
-
+            # TODO: use cross-validation mean accuracy for best model
             if accuracy > self.best_score:
                 self.best_score = accuracy
                 self.best_model = model

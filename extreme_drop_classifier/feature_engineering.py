@@ -1,5 +1,9 @@
 from loguru import logger
 
+# TODO: add support for different data types as numerical, categorical, and text features
+# TODO: use functions like StandardScaler, OneHotEncoder, or LabelEncoder and use Pipeline to combine them
+# TODO: add feature store to store feature engineering results
+
 
 class FeatureEngineering:
     """

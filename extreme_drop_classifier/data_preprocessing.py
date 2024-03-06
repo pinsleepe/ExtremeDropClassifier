@@ -3,6 +3,13 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 from loguru import logger
 
+# TODO: add Handling extremely large datasets that might not fit into memory (chunk size)
+# TODO: update the model that support incremental learning or online learning
+# TODO: if dataset is really large use Dask, PySpark, or Ray for parallel processing.
+# TODO: implement preprocessing for serving (like use the same scaler)
+# TODO: add data monitoring and quality checks
+# TODO: use Dagster or Airflow
+
 
 class DataPreprocessing(BaseEstimator, TransformerMixin):
     """
@@ -14,7 +21,10 @@ class DataPreprocessing(BaseEstimator, TransformerMixin):
     """
 
     def __init__(self):
+        # TODO: add self.scaler = StandardScaler() to scale numerical features
         pass
+
+    # TODO: add fit method to fit the scaler and modify the transform method to use it
 
     def transform(self, X):
         logger.info("Starting data transformation.")
